@@ -1,50 +1,69 @@
 #!/bin/sh
 
+CONTAINER_NAME="kairoshub"
+
 WORKSPACE_DIR="/home/pi/workspace"
 RELEASE_DIR=$WORKSPACE_DIR"/RELEASE"
 BACKUP_DIR=$RELEASE_DIR"/BACKUP"
 FILENAME_VERSION="kairoshub.VERSION"
 CURRENT_TIMESTAMP=`date +%s`
-CONTAINER_NAME="kairoshub"
+
+LOG_DIR=$WORKSPACE_DIR"/logs"
+LOG_FILE="release_kairoshub.log"
+
+[ ! -d "$LOG_DIR" ] && mkdir -p "$LOG_DIR"
+
+[ ! -f "$LOG_DIR/$LOG_FILE"] && touch $LOG_DIR/$LOG_FILE
+
+prettyEchoMessage(){
+        echo "$(date --date=@${DATE} '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_FILE
+}
+
+prettyEchoMessage "############################################################"
+prettyEchoMessage "############################################################"
+prettyEchoMessage " "
 
 cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
-echo "GETTING RELEASE $CURRENT_TIMESTAMP"
+prettyEchoMessage "GETTING kairoshub RELEASE"
 REPO="https://github.com/mfinotti/kairoshub/releases/latest/download/kairoshub.zip"
 ZIPFILE="kairoshub-relase.zip"
-wget -c $REPO -O $ZIPFILE
-echo "UNPACKAGING ARCHIVE"
-unzip $ZIPFILE
+wget -c $REPO -O $ZIPFILE &&
+prettyEchoMessage "UNPACKAGING ARCHIVE $ZIPFILE"
+unzip $ZIPFILE &&
 
-echo "CURRENT SOFTWARE VERSION: $SOFTWARE_VERSION"
+prettyEchoMessage "CURRENT SOFTWARE VERSION: $SOFTWARE_VERSION"
 RELEASE_SOFTWARE_VERSION=`cat $RELEASE_DIR/kairoshub/$FILENAME_VERSION`
-echo "RELEASE SOFTWARE VERSION: $RELEASE_SOFTWARE_VERSION"
+prettyEchoMessage "RELEASE SOFTWARE VERSION: $RELEASE_SOFTWARE_VERSION"
 
 if [ "$SOFTWARE_VERSION" = "$RELEASE_SOFTWARE_VERSION" ]; then
-        echo "SOFTWARE UP TO DATE"
+        prettyEchoMessage "SOFTWARE UP TO DATE"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" "UP_TO_DATE"
 else
-        echo "UPDATING SOFTWARE"
-        echo "BACKUP OLD SOFTWARE"
+        prettyEchoMessage "UPDATING SOFTWARE"
+        prettyEchoMessage "BACKUP OLD SOFTWARE"
         BACKUP_FILE="kairoshub-"$CURRENT_TIMESTAMP".tar.gz"
-        tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/kairoshub"
+        tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/kairoshub" &&
 
-        echo "STOPPING CONTAINER..."
+        prettyEchoMessage "STOPPING CONTAINER..."
         docker stop $CONTAINER_NAME
-        echo "MOVING NEW SOFTWARE TO WORKSPACE"
+        
+        prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
         sudo rsync -a kairoshub $WORKSPACE_DIR
         sleep 5
-        echo "PUBLISHING SOFTWARE MANIFEST $RELEASE_SOFTWARE_VERSION"
+        
+        prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST $RELEASE_SOFTWARE_VERSION"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" $RELEASE_SOFTWARE_VERSION
-        echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION
-        echo "REBOOTING CONTAINER.."
+        echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #lasciare così
+        
+        prettyEchoMessage "REBOOTING CONTAINER.."
         docker restart $CONTAINER_NAME
 fi;
 
-echo "CLEANING ENVIRONMENT..."
+prettyEchoMessage "CLEANING ENVIRONMENT..."
 rm $RELEASE_DIR/$ZIPFILE
 rm -rf $RELEASE_DIR/kairoshub
 
-echo "END"
+echo "END kairoshub release script"
 exit 0
