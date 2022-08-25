@@ -1,5 +1,4 @@
 #!/bin/sh
-
 CONTAINER_NAME="kairoshub"
 
 WORKSPACE_DIR="/home/pi/workspace"
