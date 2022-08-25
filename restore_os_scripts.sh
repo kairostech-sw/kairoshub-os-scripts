@@ -3,7 +3,7 @@
 WORKSPACE_DIR="/home/pi/workspace"
 LOG_DIR=$WORKSPACE_DIR"/logs"
 LOG_OS_SCRIPT_FILE="restore_os_scrips.log"
-SCRIPTS_DIR=$WORKSPACE_DIR"/hakairos-configuration/scripts/os"
+SCRIPTS_DIR=$WORKSPACE_DIR"/scripts/os"
 
 [ ! -d "$LOG_DIR" ] && mkdir -p "$LOG_DIR"
 
