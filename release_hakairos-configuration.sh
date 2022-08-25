@@ -13,7 +13,7 @@ LOG_FILE="release_hakairos-configuration.log"
 [ ! -f "$LOG_DIR/$LOG_FILE"] && touch $LOG_DIR/$LOG_FILE
 
 prettyEchoMessage(){
-        echo "$(date --date=@${DATE} '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_FILE
+        echo "$(date --date=now '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_FILE
 }
 
 prettyEchoMessage "############################################################"
@@ -24,7 +24,7 @@ cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
 prettyEchoMessage "GETTING kairoshub configuration RELEASE"
-REPO="https://github.com/mfinotti/hakairos-configuration/releases/latest/download/hakairos-configuration.zip"
+REPO="https://github.com/kairostech-sw/hakairos-configuration/releases/latest/download/hakairos-configuration.zip"
 ZIPFILE="hakairos-configuration-release.zip"
 wget -c $REPO -O $ZIPFILE &&
 prettyEchoMessage "UNPACKAGING ARCHIVE $ZIPFILE"

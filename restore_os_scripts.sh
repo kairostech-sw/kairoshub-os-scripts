@@ -10,7 +10,7 @@ SCRIPTS_DIR=$WORKSPACE_DIR"/scripts/os"
 [ ! -f "$LOG_DIR/$LOG_OS_SCRIPT_FILE"] && touch $LOG_DIR/$LOG_OS_SCRIPT_FILE
 
 prettyEchoMessage(){
-        echo "$(date --date=@${DATE} '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_OS_SCRIPT_FILE
+        echo "$(date --date=now '+%Y-%m-%d %H:%M') - $1" >> $LOG_DIR/$LOG_OS_SCRIPT_FILE
 }
 
 cd $SCRIPTS_DIR
