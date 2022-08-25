@@ -29,7 +29,7 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
                 prettyEchoMessage "Files are identical, skipping.."
         else
                 prettyEchoMessage "The files are divergent, a backup of the current file will be created"
-                rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
+                [ -f "$SCRIPTS_DIR/$RELEASE_FILE_BKP"] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
 
                 #rename old file
                 mv $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_BKP &&
@@ -70,7 +70,7 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
                 prettyEchoMessage "Files are identical, skipping.."
         else
                 prettyEchoMessage "The files are divergent, a backup of the current file will be created"
-                rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
+                [ -f "$SCRIPTS_DIR/$RELEASE_FILE_BKP"] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
 
                 #rename old file
                 mv $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_BKP &&
