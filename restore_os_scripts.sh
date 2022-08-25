@@ -21,6 +21,9 @@ REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/ka
 RELEASE_FILE="release_kairoshub.sh"
 RELEASE_FILE_BKP="release_kairoshub.sh.bkp"
 RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
+
+[ ! -f $RELEASE_FILE ] && touch $RELEASE_FILE
+
 { # try
         wget -c $REPO -O $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK &&
 
@@ -60,6 +63,9 @@ REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/ka
 RELEASE_FILE="release_hakairos-configuration.sh"
 RELEASE_FILE_BKP="release_hakairos-configuration.sh.bkp"
 RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
+
+[ ! -f $RELEASE_FILE ] && touch $RELEASE_FILE
+
 { # try
         wget -c $REPO -O $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK &&
 
