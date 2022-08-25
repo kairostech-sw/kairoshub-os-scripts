@@ -24,7 +24,7 @@ cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
 prettyEchoMessage "GETTING kairoshub configuration RELEASE"
-REPO="https://github.com/kairostech-sw/hakairos-configuration/releases/latest/download/hakairos-configuration.zip"
+REPO="https://github.com/kairostech-sw/kairoshub-configuration/releases/latest/download/hakairos-configuration.zip"
 ZIPFILE="hakairos-configuration-release.zip"
 wget -c $REPO -O $ZIPFILE &&
 prettyEchoMessage "UNPACKAGING ARCHIVE $ZIPFILE"
