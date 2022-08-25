@@ -21,6 +21,7 @@ prettyEchoMessage "############################################################"
 prettyEchoMessage "############################################################"
 prettyEchoMessage " "
 
+
 cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 

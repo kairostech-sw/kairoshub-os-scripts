@@ -33,6 +33,7 @@ prettyEchoMessage "CURRENT SOFTWARE VERSION: $SOFTWARE_VERSION"
 RELEASE_SOFTWARE_VERSION=`cat $RELEASE_DIR/hakairos-configuration/$FILENAME_VERSION`
 prettyEchoMessage "RELEASE SOFTWARE VERSION: $RELEASE_SOFTWARE_VERSION"
 
+
 if [ "$SOFTWARE_VERSION" = "$RELEASE_SOFTWARE_VERSION" ]; then
         prettyEchoMessage "SOFTWARE UP TO DATE"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" "UP_TO_DATE"

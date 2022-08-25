@@ -52,9 +52,7 @@ rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
 
 prettyEchoMessage "############                 OK                 ############"
 prettyEchoMessage "############################################################"
-
 prettyEchoMessage " "
-
 prettyEchoMessage "############################################################"
 prettyEchoMessage "##### RESTORING KAIROSHUB CONFIGURATION RELEASE SCRIPT #####"
 
