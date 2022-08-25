@@ -1,12 +1,11 @@
 #!/bin/sh
-CONTAINER_NAME="kairoshub"
 
+CONTAINER_NAME="kairoshub"
 WORKSPACE_DIR="/home/pi/workspace"
 RELEASE_DIR=$WORKSPACE_DIR"/RELEASE"
 BACKUP_DIR=$RELEASE_DIR"/BACKUP"
 FILENAME_VERSION="kairoshub.VERSION"
 CURRENT_TIMESTAMP=`date +%s`
-
 LOG_DIR=$WORKSPACE_DIR"/logs"
 LOG_FILE="release_kairoshub.log"
 
@@ -15,7 +14,7 @@ LOG_FILE="release_kairoshub.log"
 [ ! -f "$LOG_DIR/$LOG_FILE"] && touch $LOG_DIR/$LOG_FILE
 
 prettyEchoMessage(){
-        echo "$(date --date=now '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_FILE
+        echo "$(date --date=now '+%Y-%m-%d %H:%M') - $1" >> $LOG_DIR/$LOG_FILE
 }
 
 prettyEchoMessage "############################################################"
