@@ -17,7 +17,7 @@ cd $SCRIPTS_DIR
 prettyEchoMessage "############################################################"
 prettyEchoMessage "############ RESTORING KAIROSHUB RELEASE SCRIPT ############"
 
-REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/latest/download/release_kairoshub.sh"
+REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/kairoshome-dev-latest/release_kairoshub.sh"
 RELEASE_FILE="release_kairoshub.sh"
 RELEASE_FILE_BKP="release_kairoshub.sh.bkp"
 RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
@@ -58,7 +58,7 @@ prettyEchoMessage " "
 prettyEchoMessage "############################################################"
 prettyEchoMessage "##### RESTORING KAIROSHUB CONFIGURATION RELEASE SCRIPT #####"
 
-REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/latest/download/release_hakairos-configuration.sh"
+REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/kairoshome-dev-latest/release_hakairos-configuration.sh"
 RELEASE_FILE="release_hakairos-configuration.sh"
 RELEASE_FILE_BKP="release_hakairos-configuration.sh.bkp"
 RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"

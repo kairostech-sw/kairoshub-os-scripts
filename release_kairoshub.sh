@@ -25,7 +25,7 @@ cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
 prettyEchoMessage "GETTING kairoshub RELEASE"
-REPO="https://github.com/kairostech-sw/kairoshub/releases/latest/download/kairoshub.zip"
+REPO="https://github.com/kairostech-sw/kairoshub/releases/download/kairoshome-dev-latest/kairoshub.zip"
 ZIPFILE="kairoshub-relase.zip"
 wget -c $REPO -O $ZIPFILE &&
 prettyEchoMessage "UNPACKAGING ARCHIVE $ZIPFILE"
