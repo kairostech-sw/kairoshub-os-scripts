@@ -59,14 +59,13 @@ else
                 docker start appdaemon
 
                 prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
-                sudo service kairoshub-assistance stop &&
-                sudo service kairoshub-assistance start &&
-        
+                sudo service kairoshub-assistance stop
+                sudo service kairoshub-assistance start
+
         } || { # catch
         
-                msg = "An error is occourred on releasing kairoshub configuration. Fallingback into mainteneance mode.."
-                prettyEchoMessage  msg
-                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" msg
+                prettyEchoMessage  "An error is occourred on releasing kairoshub configuration. Fallingback into mainteneance mode.."
+                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" "An error is occourred on releasing kairoshub configuration. Fallingback into mainteneance mode.."
         }
 
 fi;

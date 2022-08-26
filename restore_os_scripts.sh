@@ -44,11 +44,12 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
                 chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
                 
                 prettyEchoMessage "kairoshub configuration release script restored. Script invoking.."
-                sh $SCRIPTS_DIR/$RELEASE_FILE &
+                sh $SCRIPTS_DIR/$RELEASE_FILE
         fi
 
 } || { # catch
        prettyEchoMessage "An error is occourred on restoring kairoshub configuration release script." 
+       python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" "An error is occourred on restoring kairoshub release script."
 }
 
 rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
@@ -87,14 +88,13 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
                 chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
 
                 prettyEchoMessage "kairoshub release script restored. Script invoking.."
-                sh $SCRIPTS_DIR/$RELEASE_FILE &
+                sh $SCRIPTS_DIR/$RELEASE_FILE
         fi
 
 } || { # catch
         
-        msg = "An error is occourred on restoring kairoshub release script."
-        prettyEchoMessage  msg
-        python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" msg
+        prettyEchoMessage  "An error is occourred on restoring kairoshub release script."
+        python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" "An error is occourred on restoring kairoshub release script."
 }
 
 rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
