@@ -40,24 +40,29 @@ if [ "$SOFTWARE_VERSION" = "$RELEASE_SOFTWARE_VERSION" ]; then
         prettyEchoMessage "SOFTWARE UP TO DATE"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" "UP_TO_DATE"
 else
-        prettyEchoMessage "UPDATING SOFTWARE"
-        prettyEchoMessage "BACKUP OLD SOFTWARE"
-        BACKUP_FILE="kairoshub-"$CURRENT_TIMESTAMP".tar.gz"
-        tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/kairoshub" &&
+        try:
+                prettyEchoMessage "UPDATING SOFTWARE"
+                prettyEchoMessage "BACKUP OLD SOFTWARE"
+                BACKUP_FILE="kairoshub-"$CURRENT_TIMESTAMP".tar.gz"
+                tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/kairoshub" &&
 
-        prettyEchoMessage "STOPPING CONTAINER..."
-        docker stop $CONTAINER_NAME
-        
-        prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
-        sudo rsync -a kairoshub $WORKSPACE_DIR
-        sleep 5
-        
-        prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST $RELEASE_SOFTWARE_VERSION"
-        python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" $RELEASE_SOFTWARE_VERSION
-        echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #lasciare così
-        
-        prettyEchoMessage "REBOOTING CONTAINER.."
-        docker restart $CONTAINER_NAME
+                prettyEchoMessage "STOPPING CONTAINER..."
+                docker stop $CONTAINER_NAME
+                
+                prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
+                sudo rsync -a kairoshub $WORKSPACE_DIR
+                sleep 5
+                
+                prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST $RELEASE_SOFTWARE_VERSION"
+                python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" $RELEASE_SOFTWARE_VERSION
+                echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #lasciare così
+                
+                prettyEchoMessage "REBOOTING CONTAINER.."
+                docker restart $CONTAINER_NAME
+                
+        except Exception as e:
+                prettyEchoMessage  e
+                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" e
 fi;
 
 prettyEchoMessage "CLEANING ENVIRONMENT..."

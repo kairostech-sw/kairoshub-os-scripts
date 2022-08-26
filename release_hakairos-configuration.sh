@@ -38,31 +38,34 @@ if [ "$SOFTWARE_VERSION" = "$RELEASE_SOFTWARE_VERSION" ]; then
         prettyEchoMessage "SOFTWARE UP TO DATE"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" "UP_TO_DATE"
 else
-        prettyEchoMessage "UPDATING SOFTWARE"
-        prettyEchoMessage "BACKUP OLD SOFTWARE"
-        BACKUP_FILE="hakairos-configuration-"$CURRENT_TIMESTAMP".tar.gz"
-        tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/hakairos-configuration" &&
-        
-        prettyEchoMessage "STOPPING CONTAINER.."
-        docker stop appdaemon
-        
-        prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
-        sudo rsync -a hakairos-configuration $WORKSPACE_DIR
-        sleep 5
-        
-        prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST"
-        python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" $RELEASE_SOFTWARE_VERSION
-        echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #volutamente lasciata così
-        
-        prettyEchoMessage "REBOOTING CONTAINER.."
-        docker start appdaemon
+        try:
+                prettyEchoMessage "UPDATING SOFTWARE"
+                prettyEchoMessage "BACKUP OLD SOFTWARE"
+                BACKUP_FILE="hakairos-configuration-"$CURRENT_TIMESTAMP".tar.gz"
+                tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/hakairos-configuration" &&
+                
+                prettyEchoMessage "STOPPING CONTAINER.."
+                docker stop appdaemon
+                
+                prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
+                sudo rsync -a hakairos-configuration $WORKSPACE_DIR
+                sleep 5
+                
+                prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST"
+                python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" $RELEASE_SOFTWARE_VERSION
+                echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #volutamente lasciata così
+                
+                prettyEchoMessage "REBOOTING CONTAINER.."
+                docker start appdaemon
 
-        prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
-        sudo service kairoshub-assistance stop &&
-        sudo service kairoshub-assistance start &&
+                prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
+                sudo service kairoshub-assistance stop &&
+                sudo service kairoshub-assistance start &&
+        
+        except Exception as e:
+                prettyEchoMessage  e
+                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" e
 
-        #chmod +x $WORKSPACE_DIR"/hakairos-configuration/scripts/os/release_hakairos-configuration.sh"
-        #chmod +x $WORKSPACE_DIR"/hakairos-configuration/scripts/os/release_kairoshub.sh"
 fi;
 
 prettyEchoMessage "CLEANING ENVIRONMENT..."

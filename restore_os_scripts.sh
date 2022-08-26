@@ -92,7 +92,9 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
 
 } || { # catch
         
-        prettyEchoMessage "An error is occourred on restoring kairoshub release script." 
+        msg = "An error is occourred on restoring kairoshub release script."
+        prettyEchoMessage  msg
+        python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" msg
 }
 
 rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
