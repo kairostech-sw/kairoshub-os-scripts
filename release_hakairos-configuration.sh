@@ -1,4 +1,5 @@
 #!/bin/sh
+TARGET_ENV=$1
 WORKSPACE_DIR="/home/pi/workspace"
 RELEASE_DIR=$WORKSPACE_DIR"/RELEASE"
 BACKUP_DIR=$RELEASE_DIR"/BACKUP"
@@ -7,9 +8,11 @@ CURRENT_TIMESTAMP=`date +%s`
 LOG_DIR=$WORKSPACE_DIR"/logs"
 LOG_FILE="release_hakairos-configuration.log"
 
+[ -z "$TARGET_ENV" ] && exit "Empty TARGET_ENV, please provide one."
+
 [ ! -d "$LOG_DIR" ] && mkdir -p "$LOG_DIR"
 
-[ ! -f "$LOG_DIR/$LOG_FILE"] && touch $LOG_DIR/$LOG_FILE
+[ ! -f "$LOG_DIR/$LOG_FILE" ] && touch $LOG_DIR/$LOG_FILE
 
 prettyEchoMessage(){
         echo "$(date --date=now '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_FILE
@@ -20,10 +23,11 @@ prettyEchoMessage "############################################################"
 prettyEchoMessage "############################################################"
 
 cd $RELEASE_DIR
+[ ! -f $FILENAME_VERSION ] && touch $FILENAME_VERSION #runs only first time
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
 prettyEchoMessage "GETTING kairoshub configuration RELEASE"
-REPO="https://github.com/kairostech-sw/kairoshub-configuration/releases/download/kairoshome-dev-latest/hakairos-configuration.zip"
+REPO="https://github.com/kairostech-sw/kairoshub-configuration/releases/download/$TARGET_ENV/hakairos-configuration.zip"
 ZIPFILE="hakairos-configuration-release.zip"
 wget -c $REPO -O $ZIPFILE &&
 prettyEchoMessage "UNPACKAGING ARCHIVE $ZIPFILE"
@@ -75,4 +79,4 @@ rm $RELEASE_DIR/$ZIPFILE
 rm -rf $RELEASE_DIR/hakairos-configuration
 
 prettyEchoMessage "END kairoshub configuration release script"
-exit 1
+exit 0

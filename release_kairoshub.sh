@@ -1,5 +1,5 @@
 #!/bin/sh
-
+TARGET_ENV=$1
 CONTAINER_NAME="kairoshub"
 WORKSPACE_DIR="/home/pi/workspace"
 RELEASE_DIR=$WORKSPACE_DIR"/RELEASE"
@@ -9,9 +9,11 @@ CURRENT_TIMESTAMP=`date +%s`
 LOG_DIR=$WORKSPACE_DIR"/logs"
 LOG_FILE="release_kairoshub.log"
 
+[ -z "$TARGET_ENV" ] && exit "Empty TARGET_ENV, please provide one."
+
 [ ! -d "$LOG_DIR" ] && mkdir -p "$LOG_DIR"
 
-[ ! -f "$LOG_DIR/$LOG_FILE"] && touch $LOG_DIR/$LOG_FILE
+[ ! -f "$LOG_DIR/$LOG_FILE" ] && touch $LOG_DIR/$LOG_FILE
 
 prettyEchoMessage(){
         echo "$(date --date=now '+%Y-%m-%d %H:%M') - $1" >> $LOG_DIR/$LOG_FILE
@@ -23,10 +25,11 @@ prettyEchoMessage "############################################################"
 
 
 cd $RELEASE_DIR
+[ ! -f $FILENAME_VERSION ] && touch $FILENAME_VERSION #runs only first time
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
 prettyEchoMessage "GETTING kairoshub RELEASE"
-REPO="https://github.com/kairostech-sw/kairoshub/releases/download/kairoshome-dev-latest/kairoshub.zip"
+REPO="https://github.com/kairostech-sw/kairoshub/releases/download/$TARGET_ENV/kairoshub.zip"
 ZIPFILE="kairoshub-relase.zip"
 wget -c $REPO -O $ZIPFILE &&
 prettyEchoMessage "UNPACKAGING ARCHIVE $ZIPFILE"
@@ -72,5 +75,5 @@ prettyEchoMessage "CLEANING ENVIRONMENT..."
 rm $RELEASE_DIR/$ZIPFILE
 rm -rf $RELEASE_DIR/kairoshub
 
-echo "END kairoshub release script"
-exit 1
+prettyEchoMessage "END kairoshub release script"
+exit 0
