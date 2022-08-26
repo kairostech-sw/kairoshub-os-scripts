@@ -15,9 +15,9 @@ prettyEchoMessage(){
         echo "$(date --date=now '+%Y-%m-%d:%H:%M') - $1" >> $LOG_DIR/$LOG_FILE
 }
 
-prettyEchoMessage "############################################################"
-prettyEchoMessage "############################################################"
 prettyEchoMessage " "
+prettyEchoMessage "############################################################"
+prettyEchoMessage "############################################################"
 
 cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
@@ -56,6 +56,10 @@ else
         
         prettyEchoMessage "REBOOTING CONTAINER.."
         docker start appdaemon
+
+        prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
+        sudo service kairoshub-assistance stop &&
+        sudo service kairoshub-assistance start &&
 
         #chmod +x $WORKSPACE_DIR"/hakairos-configuration/scripts/os/release_hakairos-configuration.sh"
         #chmod +x $WORKSPACE_DIR"/hakairos-configuration/scripts/os/release_kairoshub.sh"

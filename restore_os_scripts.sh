@@ -51,6 +51,11 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
        prettyEchoMessage "An error is occourred on restoring kairoshub configuration release script." 
 }
 
+rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
+
+prettyEchoMessage "############                 OK                 ############"
+prettyEchoMessage "############################################################"
+
 prettyEchoMessage " "
 prettyEchoMessage "############################################################"
 prettyEchoMessage "############ RESTORING KAIROSHUB RELEASE SCRIPT ############"
@@ -89,12 +94,6 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
         
         prettyEchoMessage "An error is occourred on restoring kairoshub release script." 
 }
-
-rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
-
-prettyEchoMessage "############                 OK                 ############"
-prettyEchoMessage "############################################################"
-
 
 rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
 

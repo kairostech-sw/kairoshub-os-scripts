@@ -17,9 +17,9 @@ prettyEchoMessage(){
         echo "$(date --date=now '+%Y-%m-%d %H:%M') - $1" >> $LOG_DIR/$LOG_FILE
 }
 
-prettyEchoMessage "############################################################"
-prettyEchoMessage "############################################################"
 prettyEchoMessage " "
+prettyEchoMessage "############################################################"
+prettyEchoMessage "############################################################"
 
 
 cd $RELEASE_DIR
