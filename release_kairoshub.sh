@@ -58,6 +58,7 @@ else
                 echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #lasciare così
                 
                 prettyEchoMessage "REBOOTING CONTAINER.."
+                sleep 30 #waiting other services..
                 docker restart $CONTAINER_NAME
 
         } || { # catch
@@ -73,4 +74,4 @@ rm $RELEASE_DIR/$ZIPFILE
 rm -rf $RELEASE_DIR/kairoshub
 
 echo "END kairoshub release script"
-exit 0
+exit 1

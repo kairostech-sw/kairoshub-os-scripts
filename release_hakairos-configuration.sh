@@ -76,4 +76,4 @@ rm $RELEASE_DIR/$ZIPFILE
 rm -rf $RELEASE_DIR/hakairos-configuration
 
 prettyEchoMessage "END kairoshub configuration release script"
-exit 0
+exit 1

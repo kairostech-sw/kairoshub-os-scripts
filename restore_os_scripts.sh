@@ -103,4 +103,4 @@ prettyEchoMessage "#####                        OK                        #####"
 prettyEchoMessage "############################################################"
 
 prettyEchoMessage "END restore os scripts"
-exit 0
+exit 1
