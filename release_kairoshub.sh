@@ -40,7 +40,7 @@ if [ "$SOFTWARE_VERSION" = "$RELEASE_SOFTWARE_VERSION" ]; then
         prettyEchoMessage "SOFTWARE UP TO DATE"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" "UP_TO_DATE"
 else
-        try:
+        { #try
                 prettyEchoMessage "UPDATING SOFTWARE"
                 prettyEchoMessage "BACKUP OLD SOFTWARE"
                 BACKUP_FILE="kairoshub-"$CURRENT_TIMESTAMP".tar.gz"
@@ -59,10 +59,13 @@ else
                 
                 prettyEchoMessage "REBOOTING CONTAINER.."
                 docker restart $CONTAINER_NAME
-                
-        except Exception as e:
-                prettyEchoMessage  e
-                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" e
+
+        } || { # catch
+        
+                msg = "An error is occourred on releasing kairoshub. Fallingback into mainteneance mode.."
+                prettyEchoMessage  msg
+                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" msg
+        }
 fi;
 
 prettyEchoMessage "CLEANING ENVIRONMENT..."

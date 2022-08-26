@@ -38,7 +38,7 @@ if [ "$SOFTWARE_VERSION" = "$RELEASE_SOFTWARE_VERSION" ]; then
         prettyEchoMessage "SOFTWARE UP TO DATE"
         python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" "UP_TO_DATE"
 else
-        try:
+        { # try
                 prettyEchoMessage "UPDATING SOFTWARE"
                 prettyEchoMessage "BACKUP OLD SOFTWARE"
                 BACKUP_FILE="hakairos-configuration-"$CURRENT_TIMESTAMP".tar.gz"
@@ -62,9 +62,12 @@ else
                 sudo service kairoshub-assistance stop &&
                 sudo service kairoshub-assistance start &&
         
-        except Exception as e:
-                prettyEchoMessage  e
-                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" e
+        } || { # catch
+        
+                msg = "An error is occourred on releasing kairoshub configuration. Fallingback into mainteneance mode.."
+                prettyEchoMessage  msg
+                python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" msg
+        }
 
 fi;
 
