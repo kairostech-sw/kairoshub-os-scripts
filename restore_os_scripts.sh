@@ -1,13 +1,15 @@
 #!/bin/sh
-
+TARGET_ENV=$1
 WORKSPACE_DIR="/home/pi/workspace"
 LOG_DIR=$WORKSPACE_DIR"/logs"
 LOG_OS_SCRIPT_FILE="restore_os_scrips.log"
 SCRIPTS_DIR=$WORKSPACE_DIR"/scripts"
 
-[ ! -d "$LOG_DIR" ] && mkdir -p "$LOG_DIR"
+[ -z $TARGET_ENV ] && exit "Empty TARGET_ENV, please provide one."
 
-[ ! -f "$LOG_DIR/$LOG_OS_SCRIPT_FILE"] && touch $LOG_DIR/$LOG_OS_SCRIPT_FILE
+[ ! -d $LOG_DIR ] && mkdir -p "$LOG_DIR"
+
+[ ! -f $LOG_DIR"/"$LOG_OS_SCRIPT_FILE ] && touch $LOG_DIR/$LOG_OS_SCRIPT_FILE
 
 prettyEchoMessage(){
         echo "$(date --date=now '+%Y-%m-%d %H:%M') - $1" >> $LOG_DIR/$LOG_OS_SCRIPT_FILE
@@ -15,53 +17,15 @@ prettyEchoMessage(){
 
 cd $SCRIPTS_DIR
 prettyEchoMessage "############################################################"
-prettyEchoMessage "############ RESTORING KAIROSHUB RELEASE SCRIPT ############"
-
-REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/kairoshome-latest/release_kairoshub.sh"
-RELEASE_FILE="release_kairoshub.sh"
-RELEASE_FILE_BKP="release_kairoshub.sh.bkp"
-RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
-{ # try
-        wget -c $REPO -O $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK &&
-
-        prettyEchoMessage "comparing $RELEASE_FILE and $RELEASE_FILE_TO_CHECK files"
-        if cmp --silent -- $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK; then
-                prettyEchoMessage "Files are identical, skipping.."
-        else
-                prettyEchoMessage "The files are divergent, a backup of the current file will be created"
-                [ -f "$SCRIPTS_DIR/$RELEASE_FILE_BKP"] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
-
-                #rename old file
-                mv $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_BKP &&
-
-                #moving new file
-                mv $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK $SCRIPTS_DIR/$RELEASE_FILE &&
-
-                #change permission file
-                chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
-
-                prettyEchoMessage "kairoshub release script restored. Script invoking.."
-        fi
-
-} || { # catch
-        
-        prettyEchoMessage "An error is occourred on restoring kairoshub release script." 
-}
-
-rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
-
-prettyEchoMessage "############                 OK                 ############"
-prettyEchoMessage "############################################################"
-
-prettyEchoMessage " "
-
-prettyEchoMessage "############################################################"
 prettyEchoMessage "##### RESTORING KAIROSHUB CONFIGURATION RELEASE SCRIPT #####"
 
-REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/kairoshome-latest/release_hakairos-configuration.sh"
+REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/$TARGET_ENV/release_hakairos-configuration.sh"
 RELEASE_FILE="release_hakairos-configuration.sh"
 RELEASE_FILE_BKP="release_hakairos-configuration.sh.bkp"
 RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
+
+[ ! -f $RELEASE_FILE ] && touch $RELEASE_FILE
+
 { # try
         wget -c $REPO -O $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK &&
 
@@ -70,7 +34,7 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
                 prettyEchoMessage "Files are identical, skipping.."
         else
                 prettyEchoMessage "The files are divergent, a backup of the current file will be created"
-                [ -f "$SCRIPTS_DIR/$RELEASE_FILE_BKP"] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
+                [ -f $SCRIPTS_DIR"/"$RELEASE_FILE_BKP ] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
 
                 #rename old file
                 mv $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_BKP &&
@@ -82,13 +46,56 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
                 chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
                 
                 prettyEchoMessage "kairoshub configuration release script restored. Script invoking.."
+                sh $SCRIPTS_DIR/$RELEASE_FILE $TARGET_ENV
         fi
 
 } || { # catch
-       prettyEchoMessage "An error is occourred on restoring kairoshub configuration release script." 
+       prettyEchoMessage "An error is occourred on restoring kairoshub-configuration release script." 
+       #python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" "An error is occourred on restoring kairoshub-configuration release script."
 }
 
-rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
+prettyEchoMessage "############                 OK                 ############"
+prettyEchoMessage "############################################################"
+
+prettyEchoMessage " "
+prettyEchoMessage "############################################################"
+prettyEchoMessage "############ RESTORING KAIROSHUB RELEASE SCRIPT ############"
+
+REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/$TARGET_ENV/release_kairoshub.sh"
+RELEASE_FILE="release_kairoshub.sh"
+RELEASE_FILE_BKP="release_kairoshub.sh.bkp"
+RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
+
+[ ! -f $RELEASE_FILE ] && touch $RELEASE_FILE
+
+{ # try
+        wget -c $REPO -O $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK &&
+
+        prettyEchoMessage "comparing $RELEASE_FILE and $RELEASE_FILE_TO_CHECK files"
+        if cmp --silent -- $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK; then
+                prettyEchoMessage "Files are identical, skipping.."
+        else
+                prettyEchoMessage "The files are divergent, a backup of the current file will be created"
+                [ -f $SCRIPTS_DIR"/"$RELEASE_FILE_BKP ] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
+
+                #rename old file
+                mv $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_BKP &&
+
+                #moving new file
+                mv $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK $SCRIPTS_DIR/$RELEASE_FILE &&
+
+                #change permission file
+                chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
+
+                prettyEchoMessage "kairoshub release script restored. Script invoking.."
+                sh $SCRIPTS_DIR/$RELEASE_FILE $TARGET_ENV
+        fi
+
+} || { # catch
+        
+        prettyEchoMessage  "An error is occourred on restoring kairoshub release script."
+        python /home/pi/workspace/hakairos-configuration/scripts/mainteneance.py "ON" "An error is occourred on restoring kairoshub release script."
+}
 
 prettyEchoMessage "#####                        OK                        #####"
 prettyEchoMessage "############################################################"
