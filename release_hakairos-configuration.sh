@@ -27,7 +27,6 @@ cd $RELEASE_DIR
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
 
 prettyEchoMessage "GETTING kairoshub configuration RELEASE"
-
 REPO="https://github.com/kairostech-sw/kairoshub-configuration/releases/download/$TARGET_ENV/hakairos-configuration.zip"
 ZIPFILE="hakairos-configuration-release.zip"
 wget -c $REPO -O $ZIPFILE &&
@@ -49,8 +48,11 @@ else
                 BACKUP_FILE="hakairos-configuration-"$CURRENT_TIMESTAMP".tar.gz"
                 tar -czvf $BACKUP_DIR/$BACKUP_FILE $WORKSPACE_DIR"/hakairos-configuration" &&
                 
-                prettyEchoMessage "STOPPING CONTAINER.."
+                prettyEchoMessage "STOPPING APPDAEMON CONTAINER.."
                 docker stop appdaemon
+
+                prettyEchoMessage "STOPPING KAIROSHUB CONTAINER.."
+                docker stop kairoshub
                 
                 prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
                 sudo rsync -a hakairos-configuration $WORKSPACE_DIR
@@ -60,8 +62,11 @@ else
                 python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" $RELEASE_SOFTWARE_VERSION
                 echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #volutamente lasciata così
                 
-                prettyEchoMessage "REBOOTING CONTAINER.."
+                prettyEchoMessage "REBOOTING APPDAEMON CONTAINER.."
                 docker start appdaemon
+
+                prettyEchoMessage "REBOOTING KAIROSHUB CONTAINER.."
+                docker start kairoshub
 
                 prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
                 sudo service kairoshub-assistance stop
