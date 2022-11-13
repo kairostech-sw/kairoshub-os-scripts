@@ -56,10 +56,11 @@ else
                 
                 prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
                 sudo rsync -a hakairos-configuration $WORKSPACE_DIR
+                sudo chown -R pi:pi $WORKSPACE_DIR/"hakairos-configuration"
                 sleep 5
                 
                 prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST"
-                python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" $RELEASE_SOFTWARE_VERSION
+                python /home/pi/workspace/hakairos-configuration/scripts/release.py "hakairos-configuration" $RELEASE_SOFTWARE_VERSION $TARGET_ENV
                 echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #volutamente lasciata così
                 
                 prettyEchoMessage "REBOOTING APPDAEMON CONTAINER.."
