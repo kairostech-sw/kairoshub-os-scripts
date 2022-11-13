@@ -55,10 +55,11 @@ else
                 
                 prettyEchoMessage "MOOVING NEW SOFTWARE TO WORKSPACE"
                 sudo rsync -a kairoshub $WORKSPACE_DIR
+                sudo chown -R pi:pi $WORKSPACE_DIR/"kairoshub"
                 sleep 5
                 
                 prettyEchoMessage "PUBLISHING SOFTWARE MANIFEST $RELEASE_SOFTWARE_VERSION"
-                python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" $RELEASE_SOFTWARE_VERSION
+                python /home/pi/workspace/hakairos-configuration/scripts/release.py "kairoshub" $RELEASE_SOFTWARE_VERSION $TARGET_ENV
                 echo $RELEASE_SOFTWARE_VERSION | tee $FILENAME_VERSION #lasciare così
                 
                 prettyEchoMessage "REBOOTING CONTAINER.."
