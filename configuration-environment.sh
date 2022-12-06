@@ -50,6 +50,10 @@ prettyEchoMessage "Adding crontab schedulation $KAIROSHUB_RELEASE_SCRIPT every 1
 echo "10 02 */15 * * $KAIROSHUB_RELEASE_SCRIPT $TARGET_ENV" >> crontobeupdated
 prettyEchoMessage "Adding crontab schedulation $KAIROSCONFIGURATION_RELEASE_SCRIT every 15 days at 02:05 AM"
 echo "05 02 */15 * * $KAIROSCONFIGURATION_RELEASE_SCRIT $TARGET_ENV" >> crontobeupdated
+prettyEchoMessage "Adding crontab schedulation for restart assistance routine every days at 15:00 PM"
+echo "0 15 * * * sudo service kairoshub-assistance restart" >> crontobeupdated
+prettyEchoMessage "Adding crontab schedulation for reboot routine every days at 03:00 AM"
+echo "0 03 * * * sudo shutdown -r" >> crontobeupdated
 
 sudo crontab -u root crontobeupdated
 rm crontobeupdated
