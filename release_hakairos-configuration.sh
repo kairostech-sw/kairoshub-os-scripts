@@ -22,6 +22,8 @@ prettyEchoMessage " "
 prettyEchoMessage "############################################################"
 prettyEchoMessage "############################################################"
 
+prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
+sudo service kairoshub-assistance restart
 
 cd $RELEASE_DIR
 [ ! -f $FILENAME_VERSION ] && touch $FILENAME_VERSION #runs only first time
