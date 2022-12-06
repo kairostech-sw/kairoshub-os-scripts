@@ -19,6 +19,9 @@ cd $SCRIPTS_DIR
 prettyEchoMessage "############################################################"
 prettyEchoMessage "##### RESTORING KAIROSHUB CONFIGURATION RELEASE SCRIPT #####"
 
+prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
+sudo service kairoshub-assistance restart
+
 REPO="https://github.com/kairostech-sw/kairoshub-os-scripts/releases/download/$TARGET_ENV/release_hakairos-configuration.sh"
 RELEASE_FILE="release_hakairos-configuration.sh"
 RELEASE_FILE_BKP="release_hakairos-configuration.sh.bkp"
@@ -32,6 +35,7 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
         prettyEchoMessage "comparing $RELEASE_FILE and $RELEASE_FILE_TO_CHECK files"
         if cmp --silent -- $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK; then
                 prettyEchoMessage "Files are identical, skipping.."
+                rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
         else
                 prettyEchoMessage "The files are divergent, a backup of the current file will be created"
                 [ -f $SCRIPTS_DIR"/"$RELEASE_FILE_BKP ] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
@@ -74,6 +78,7 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
         prettyEchoMessage "comparing $RELEASE_FILE and $RELEASE_FILE_TO_CHECK files"
         if cmp --silent -- $SCRIPTS_DIR/$RELEASE_FILE $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK; then
                 prettyEchoMessage "Files are identical, skipping.."
+                rm $SCRIPTS_DIR/$RELEASE_FILE_TO_CHECK
         else
                 prettyEchoMessage "The files are divergent, a backup of the current file will be created"
                 [ -f $SCRIPTS_DIR"/"$RELEASE_FILE_BKP ] && rm $SCRIPTS_DIR/$RELEASE_FILE_BKP
@@ -99,6 +104,7 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
 
 prettyEchoMessage "#####                        OK                        #####"
 prettyEchoMessage "############################################################"
+
 
 prettyEchoMessage "END restore os scripts"
 exit 0

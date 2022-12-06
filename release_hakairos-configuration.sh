@@ -22,6 +22,7 @@ prettyEchoMessage " "
 prettyEchoMessage "############################################################"
 prettyEchoMessage "############################################################"
 
+
 cd $RELEASE_DIR
 [ ! -f $FILENAME_VERSION ] && touch $FILENAME_VERSION #runs only first time
 SOFTWARE_VERSION=`cat $FILENAME_VERSION`
@@ -68,11 +69,7 @@ else
 
                 prettyEchoMessage "REBOOTING KAIROSHUB CONTAINER.."
                 docker start kairoshub
-
-                prettyEchoMessage "RESTARTING KAIROSHUB ASSISTANCE SERVICE"
-                sudo service kairoshub-assistance stop
-                sudo service kairoshub-assistance start
-
+                
         } || { # catch
         
                 prettyEchoMessage  "An error is occourred on releasing kairoshub configuration. Fallingback into mainteneance mode.."
