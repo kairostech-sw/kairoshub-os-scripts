@@ -39,7 +39,10 @@ prettyEchoMessage "Downloading restore script from repository: $REPO"
 wget $REPO -O $RESTORE_SCRIPT &&
 
 prettyEchoMessage "Changing permission to restore script"
+chown -R pi:pi $RESTORE_SCRIPT
 chmod +x $RESTORE_SCRIPT &&
+
+sed -i -e 's/\r$//' $RESTORE_SCRIPT
 
 prettyEchoMessage "Adding crontab schedulation for $RESTORE_SCRIPT every day at 02:00 AM"
 sudo crontab -l > crontobeupdated

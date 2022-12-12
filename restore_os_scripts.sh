@@ -50,6 +50,7 @@ RELEASE_FILE_TO_CHECK="release_hakairos-configuration.sh.check"
                 chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
                 
                 prettyEchoMessage "kairoshub configuration release script restored. Script invoking.."
+                sed -i -e 's/\r$//' $SCRIPTS_DIR/$RELEASE_FILE
                 sh $SCRIPTS_DIR/$RELEASE_FILE $TARGET_ENV
         fi
 
@@ -93,6 +94,7 @@ RELEASE_FILE_TO_CHECK="release_kairoshub.sh.check"
                 chmod +x $SCRIPTS_DIR/$RELEASE_FILE &&
 
                 prettyEchoMessage "kairoshub release script restored. Script invoking.."
+                sed -i -e 's/\r$//' $SCRIPTS_DIR/$RELEASE_FILE
                 sh $SCRIPTS_DIR/$RELEASE_FILE $TARGET_ENV
         fi
 
